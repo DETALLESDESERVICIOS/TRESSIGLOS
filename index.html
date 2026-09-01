@@ -964,11 +964,11 @@
 						<div class="sheet-meta">
 							<div class="sheet-meta-row">
 								<div class="sheet-meta-label">unidad</div>
-								<input class="sheet-meta-input" id="insumo-unidad" name="unidad" type="text" required />
+								<input class="sheet-meta-input" id="insumo-unidad" name="UNIDAD" type="text" required />
 							</div>
 							<div class="sheet-meta-row">
 								<div class="sheet-meta-label">economico</div>
-								<input class="sheet-meta-input" id="insumo-economico" name="economico" type="text" list="insumoUnidadDatalist" required />
+								<input class="sheet-meta-input" id="insumo-economico" name="ECONOMICO" type="text" list="insumoUnidadDatalist" required />
 							</div>
 							<div class="sheet-meta-row">
 								<div class="sheet-meta-label">OBSERVACIONES</div>
@@ -1150,7 +1150,7 @@
 
 		const SERVICIO_COLUMNS = ["FECHA", "UNIDAD", "TEMA", "COMENTARIO", "ESTATUS"];
 		const TALLER_COLUMNS = ["LUGAR TALLER", "ECONOMICO", "TEMA", "COMENTARIO", "ESTATUS"];
-		const INSUMOS_COLUMNS = ["economico", "unidad", "OBSERVACIONES", "PRIMER EJE", "SEGUNDO EJE", "TERCER EJE", "CUARTO EJE", "QUINTO EJE", "SEXTO EJE"];
+		const INSUMOS_COLUMNS = ["ECONOMICO", "UNIDAD", "OBSERVACIONES", "PRIMER EJE", "SEGUNDO EJE", "TERCER EJE", "CUARTO EJE", "QUINTO EJE", "SEXTO EJE"];
 		const UNIDAD_COLUMNS = [
 			"ECONOMICO",
 			"UNIDAD",
@@ -1533,9 +1533,9 @@
 			insumosForm.reset();
 			fillEjeCellsFromRow(row || {});
 			if (row) {
-				insumosModalTitle.textContent = `Solicitud de llantas - ${row["unidad"] || row["economico"] || "Unidad"}`;
-				insumoEconomicoInput.value = (row["economico"] || "").toString();
-				insumoUnidadInput.value = (row["unidad"] || "").toString();
+				insumosModalTitle.textContent = `Solicitud de llantas - ${row["UNIDAD"] || row["ECONOMICO"] || "Unidad"}`;
+				insumoEconomicoInput.value = (row["ECONOMICO"] || "").toString();
+				insumoUnidadInput.value = (row["UNIDAD"] || "").toString();
 				insumoObservacionesInput.value = getObservacionesFromRow(row);
 			} else {
 				insumosModalTitle.textContent = "Nueva solicitud de llantas";
@@ -2071,8 +2071,8 @@
 			}
 
 			insumosTbody.innerHTML = rows.map((row) => {
-				const economico = escapeHtml(row["economico"]);
-				const unidad = escapeHtml(row["unidad"]);
+				const economico = escapeHtml(row["ECONOMICO"]);
+				const unidad = escapeHtml(row["UNIDAD"]);
 				const observaciones = escapeHtml(getObservacionesFromRow(row));
 				const primerEje = escapeHtml(row["PRIMER EJE"]);
 				const segundoEje = escapeHtml(row["SEGUNDO EJE"]);
@@ -2252,7 +2252,7 @@
 			if (action === "delete-insumo") {
 				const row = insumosRows.find((item) => item.__id === rowId);
 				if (!row) return;
-				const ok = confirm(`¿Eliminar solicitud de SOLICITUD DE LLANTAS para ${row["unidad"] || row["economico"]}?`);
+				const ok = confirm(`¿Eliminar solicitud de SOLICITUD DE LLANTAS para ${row["UNIDAD"] || row["ECONOMICO"]}?`);
 				if (!ok) return;
 				const criteria = pickCriteria(row, INSUMOS_COLUMNS);
 				if (!Object.keys(criteria).length) {
@@ -2280,8 +2280,8 @@
 			const formData = new FormData(insumosForm);
 			const observacionesValue = (formData.get("OBSERVACIONES") || "").toString().trim();
 			const record = {
-				"economico": (formData.get("economico") || "").toString().trim(),
-				"unidad": (formData.get("unidad") || "").toString().trim(),
+				"ECONOMICO": (formData.get("ECONOMICO") || "").toString().trim(),
+				"UNIDAD": (formData.get("UNIDAD") || "").toString().trim(),
 				"PRIMER EJE": (formData.get("PRIMER EJE") || "").toString().trim(),
 				"SEGUNDO EJE": (formData.get("SEGUNDO EJE") || "").toString().trim(),
 				"TERCER EJE": (formData.get("TERCER EJE") || "").toString().trim(),
