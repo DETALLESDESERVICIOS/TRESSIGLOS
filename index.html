@@ -4,6 +4,7 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Tres Siglos | Unidades</title>
+	<link rel="icon" type="image/png" href="https://cdn.prod.website-files.com/62b4e3084bb69b3cbd747e80/62b4e344650db7626d857053_TS_ORGINAL_LOGO.png" />
 	<style>
 		:root {
 			--bg-1: #f4f7fb;
@@ -57,6 +58,21 @@
 			margin: 0;
 			font-size: 1.4rem;
 			letter-spacing: 0.3px;
+		}
+
+		.header-brand {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.header-logo {
+			height: 72px;
+			width: 72px;
+			object-fit: contain;
+			background: #fff;
+			border-radius: 10px;
+			padding: 6px;
 		}
 
 		.header p {
@@ -284,6 +300,17 @@
 			width: 100%;
 		}
 
+		.search-count {
+			font-size: 0.85rem;
+			font-weight: 700;
+			color: #0d4f93;
+			background: #eaf3ff;
+			border: 1px solid #bcdafc;
+			border-radius: 999px;
+			padding: 6px 12px;
+			white-space: nowrap;
+		}
+
 		.unit-chip {
 			display: inline-flex;
 			align-items: center;
@@ -413,6 +440,11 @@
 			word-break: break-word;
 			vertical-align: top;
 			min-width: 120px;
+		}
+
+		th.col-extra,
+		td.col-extra {
+			display: none;
 		}
 
 		.modal {
@@ -583,21 +615,25 @@
 <body>
 	<main class="app">
 		<header class="header">
-			<h1>Sistema de Unidades - Tres Siglos</h1>
+			<div class="header-brand">
+				<img class="header-logo" src="https://cdn.prod.website-files.com/62b4e3084bb69b3cbd747e80/62b4e344650db7626d857053_TS_ORGINAL_LOGO.png" alt="Logo Tres Siglos" />
+				<h1>Sistema de Unidades - Tres Siglos</h1>
+			</div>
 			<p>Conectado a SheetDB para unidades y detalles de servicios</p>
 		</header>
 
 		<nav class="tabs" aria-label="Pestanas principales">
-			<button class="tab-btn active" data-tab="detalles">Detalles de servicios</button>
-			<button class="tab-btn" data-tab="datos">Datos de unidades</button>
-			<button class="tab-btn" data-tab="taller">Unidades en taller</button>
-			<button class="tab-btn" data-tab="insumos">Solicitud de llantas</button>
+			<button class="tab-btn active" data-tab="detalles">DETALLES REPORTADOS</button>
+			<button class="tab-btn" data-tab="datos">UNIDADES TRES SIGLOS</button>
+			<button class="tab-btn" data-tab="taller">UNIDADES EN TALLER</button>
+			<button class="tab-btn" data-tab="insumos">SOLICITUD DE LLANTAS</button>
 		</nav>
 
 		<section class="panel active" id="panel-detalles">
 			<div class="actions">
-				<h2>Detalles de servicios</h2>
+				<h2>DETALLES REPORTADOS</h2>
 				<input class="search-box" id="searchServicios" type="text" placeholder="Buscar en detalles de servicios..." />
+				<span class="search-count" id="searchServiciosCount"></span>
 				<button class="btn btn-primary" id="toggleFormBtn">Nuevo servicio</button>
 			</div>
 
@@ -642,11 +678,11 @@
 				<table aria-label="Tabla de detalles de unidades">
 					<thead>
 						<tr>
-							<th>Fecha</th>
-							<th>Unidad</th>
-							<th>Tema</th>
-							<th>Comentario</th>
-							<th>Estatus</th>
+							<th>FECHA</th>
+							<th>UNIDAD</th>
+							<th>TEMA</th>
+							<th>COMENTARIO</th>
+							<th>ESTATUS</th>
 							<th>Accion</th>
 						</tr>
 					</thead>
@@ -661,34 +697,123 @@
 
 		<section class="panel" id="panel-datos">
 			<div class="actions">
-				<h2>Datos de unidades</h2>
+				<h2>UNIDADES TRES SIGLOS</h2>
 				<input class="search-box" id="searchUnidades" type="text" placeholder="Buscar en datos de unidades..." />
+				<span class="search-count" id="searchUnidadesCount"></span>
+				<button class="btn btn-primary" id="toggleUnidadFormBtn">Nueva unidad</button>
+			</div>
+
+			<div class="form-wrap" id="unidadFormWrap">
+				<form id="unidadForm">
+					<div class="grid">
+						<div class="field">
+							<label for="unidad-economico">Economico</label>
+							<input id="unidad-economico" name="ECONOMICO" type="text" required />
+						</div>
+						<div class="field">
+							<label for="unidad-unidad">Unidad</label>
+							<input id="unidad-unidad" name="UNIDAD" type="text" required />
+						</div>
+						<div class="field">
+							<label for="unidad-asignado">Asignado a</label>
+							<input id="unidad-asignado" name="ASIGNADO A" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-modelo">Modelo</label>
+							<input id="unidad-modelo" name="MODELO" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-placas">Placas</label>
+							<input id="unidad-placas" name="PLACAS" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-niv">NIV</label>
+							<input id="unidad-niv" name="NIV" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-motor">Numero de motor</label>
+							<input id="unidad-motor" name="NUMERO DE MOTOR" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-tag">Numero de tag</label>
+							<input id="unidad-tag" name="NUMERO DE TAG" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-aseguradora">Aseguradora</label>
+							<input id="unidad-aseguradora" name="ASEGURADORA" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-poliza">Poliza de seguro</label>
+							<input id="unidad-poliza" name="POLIZA DE SEGURO" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-inciso">Inciso</label>
+							<input id="unidad-inciso" name="INCISO" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-tipo">Tipo</label>
+							<input id="unidad-tipo" name="TIPO" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-tanque">Tanque de combustible</label>
+							<input id="unidad-tanque" name="TANQUE DE CONBUSTIBLE" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-largo">Largo</label>
+							<input id="unidad-largo" name="LARGO" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-alto">Alto</label>
+							<input id="unidad-alto" name="ALTO" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-ancho">Ancho</label>
+							<input id="unidad-ancho" name="ANCHO" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-ultimo-llantas">Ultimo cambio de llantas</label>
+							<input id="unidad-ultimo-llantas" name="ULTIMO CAMBIO DE LLANTAS" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-ultimo-balatas">Ultimo cambio de balatas</label>
+							<input id="unidad-ultimo-balatas" name="ULTIMO CAMBIO DE BALATAS" type="text" />
+						</div>
+					</div>
+					<div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+						<button type="submit" class="btn btn-primary">Guardar unidad</button>
+						<button type="button" class="btn btn-secondary" id="cancelUnidadFormBtn">Cancelar</button>
+					</div>
+				</form>
 			</div>
 
 			<div class="table-wrap">
 				<table aria-label="Tabla de datos de unidades">
 					<thead>
 						<tr>
-							<th>Economico</th>
-							<th>Unidad</th>
-							<th>Asignado a</th>
-							<th>Modelo</th>
-							<th>Placas</th>
+							<th>ECONOMICO</th>
+							<th>UNIDAD</th>
+							<th>ASIGNADO A</th>
+							<th class="col-extra">MODELO</th>
+							<th>PLACAS</th>
 							<th>NIV</th>
-							<th class="hidden-unit-col">No. Motor</th>
-							<th class="hidden-unit-col">No. de Tag</th>
-							<th class="hidden-unit-col">Aseguradora</th>
-							<th class="hidden-unit-col">Poliza de seguro</th>
-							<th class="hidden-unit-col">Inciso</th>
-							<th class="hidden-unit-col">Tipo</th>
-							<th>ultimo cambio de balatas</th>
-							<th>ultimo cambio de llantas</th>
+							<th class="col-extra">NUMERO DE MOTOR</th>
+							<th class="col-extra">NUMERO DE TAG</th>
+							<th class="col-extra">ASEGURADORA</th>
+							<th class="col-extra">POLIZA DE SEGURO</th>
+							<th class="col-extra">INCISO</th>
+							<th class="col-extra">TIPO</th>
+							<th class="col-extra">TANQUE DE CONBUSTIBLE</th>
+							<th class="col-extra">LARGO</th>
+							<th class="col-extra">ALTO</th>
+							<th class="col-extra">ANCHO</th>
+							<th>ULTIMO CAMBIO DE LLANTAS</th>
+							<th>ULTIMO CAMBIO DE BALATAS</th>
 							<th>Accion</th>
 						</tr>
 					</thead>
 					<tbody id="datosTbody">
 						<tr>
-							<td colspan="15" class="empty">Cargando datos de unidades...</td>
+							<td colspan="19" class="empty">Cargando datos de unidades...</td>
 						</tr>
 					</tbody>
 				</table>
@@ -696,8 +821,9 @@
 		</section>
 		<section class="panel" id="panel-taller">
 			<div class="actions">
-				<h2>Unidades en taller</h2>
+				<h2>UNIDADES EN TALLER</h2>
 				<input class="search-box" id="searchTaller" type="text" placeholder="Buscar en unidades en taller..." />
+				<span class="search-count" id="searchTallerCount"></span>
 				<button class="btn btn-primary" id="toggleTallerFormBtn">Nueva entrada</button>
 			</div>
 
@@ -741,11 +867,11 @@
 				<table aria-label="Tabla de unidades en taller">
 					<thead>
 						<tr>
-							<th>Lugar taller</th>
-							<th>Economico</th>
-							<th>Tema</th>
-							<th>Comentario</th>
-							<th>Estatus</th>
+							<th>LUGAR TALLER</th>
+							<th>ECONOMICO</th>
+							<th>TEMA</th>
+							<th>COMENTARIO</th>
+							<th>ESTATUS</th>
 							<th>Accion</th>
 						</tr>
 					</thead>
@@ -758,42 +884,29 @@
 
 		<section class="panel" id="panel-insumos">
 			<div class="actions">
-				<h2>Solicitud de llantas</h2>
+				<h2>SOLICITUD DE LLANTAS</h2>
 				<input class="search-box" id="searchInsumos" type="text" placeholder="Buscar en solicitud de llantas..." />
+				<span class="search-count" id="searchInsumosCount"></span>
 				<button class="btn btn-primary" id="openInsumosModalBtn">Nueva solicitud</button>
 			</div>
 			<div class="table-wrap">
 				<table aria-label="Tabla SOLICITUD DE LLANTAS">
 					<thead>
 						<tr>
-							<th>economico</th>
-							<th>unidad</th>
+							<th>ECONOMICO</th>
+							<th>UNIDAD</th>
 							<th>OBSERVACIONES</th>
-							<th>accion</th>
+							<th class="col-extra">PRIMER EJE</th>
+							<th class="col-extra">SEGUNDO EJE</th>
+							<th class="col-extra">TERCER EJE</th>
+							<th class="col-extra">CUARTO EJE</th>
+							<th class="col-extra">QUINTO EJE</th>
+							<th class="col-extra">SEXTO EJE</th>
+							<th>Accion</th>
 						</tr>
 					</thead>
 					<tbody id="insumosTbody">
-						<tr><td colspan="4" class="empty">Cargando solicitud de llantas...</td></tr>
-					</tbody>
-				</table>
-			</div>
-		</section>
-
-		<section class="panel" id="panel-solicitud">
-			<div class="actions">
-				<h2>costos de talleres</h2>
-				<input class="search-box" id="searchSolicitud" type="text" placeholder="" style="display:none;" />
-				<button class="btn btn-primary" id="openSolicitudModalBtn" style="display:none;">Agregar</button>
-			</div>
-			<div class="table-wrap">
-				<table aria-label="Tabla costos de talleres">
-					<thead>
-						<tr>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody id="solicitudTbody">
-						<tr><td colspan="1" class="empty"></td></tr>
+						<tr><td colspan="10" class="empty">Cargando solicitud de llantas...</td></tr>
 					</tbody>
 				</table>
 			</div>
@@ -896,54 +1009,6 @@
 		</div>
 	</div>
 
-	<div class="modal" id="solicitudModal" aria-hidden="true">
-		<div class="modal-card">
-			<div class="modal-head">
-				<h3>Agregar en SOLICITUD</h3>
-				<button type="button" class="btn btn-secondary btn-small" id="closeSolicitudModalBtn">Cerrar</button>
-			</div>
-			<form id="solicitudForm">
-				<div class="modal-body">
-					<div class="edit-grid">
-						<div class="field">
-							<label for="solicitud-fecha">fecha</label>
-							<input id="solicitud-fecha" name="fecha" type="date" required />
-						</div>
-						<div class="field">
-							<label for="solicitud-solicitante">solicitante</label>
-							<input id="solicitud-solicitante" name="solicitante" type="text" list="solicitudUnidadDatalist" placeholder="Escribe economico o unidad" autocomplete="off" required />
-						</div>
-						<div class="field">
-							<label for="solicitud-material">material</label>
-							<input id="solicitud-material" name="material" type="text" required />
-						</div>
-						<div class="field">
-							<label for="solicitud-cantidad">cantidad solicitada</label>
-							<input id="solicitud-cantidad" name="cantidad solicitada" type="text" required />
-						</div>
-						<div class="field">
-							<label for="solicitud-estatus">estatus de entrega</label>
-							<select id="solicitud-estatus" name="estatus de entrega" required style="border-radius:9px;padding:10px;font-size:.95rem;border:1px solid var(--border);">
-								<option value="">Seleccionar</option>
-								<option value="en proceso" style="background:#ffe0b2;color:#7c2d12;font-weight:700;">🟠 en proceso</option>
-								<option value="entregado" style="background:#c8f7d3;color:#14532d;font-weight:700;">🟢 entregado</option>
-							</select>
-						</div>
-						<div class="field">
-							<label for="solicitud-fecha-entrega">fecha de entrega</label>
-							<input id="solicitud-fecha-entrega" name="fecha de entrega" type="date" />
-						</div>
-					</div>
-					<datalist id="solicitudUnidadDatalist"></datalist>
-				</div>
-				<div class="modal-actions">
-					<button type="button" class="btn btn-secondary" id="cancelSolicitudModalBtn">Cancelar</button>
-					<button type="submit" class="btn btn-primary" id="saveSolicitudBtn">Guardar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-
 	<div class="modal" id="editModal" aria-hidden="true">
 		<div class="modal-card">
 			<div class="modal-head">
@@ -968,8 +1033,7 @@
 		const panelDatos = document.getElementById("panel-datos");
 		const panelTaller = document.getElementById("panel-taller");
 		const panelInsumos = document.getElementById("panel-insumos");
-		const panelSolicitud = document.getElementById("panel-solicitud");
-		const allPanels = [panelDetalles, panelDatos, panelTaller, panelInsumos, panelSolicitud];
+		const allPanels = [panelDetalles, panelDatos, panelTaller, panelInsumos];
 
 		tabButtons.forEach((button) => {
 			button.addEventListener("click", () => {
@@ -992,14 +1056,20 @@
 		const detallesTbody = document.getElementById("detallesTbody");
 		const datosTbody = document.getElementById("datosTbody");
 		const searchServicios = document.getElementById("searchServicios");
+		const searchServiciosCount = document.getElementById("searchServiciosCount");
 		const searchUnidades = document.getElementById("searchUnidades");
+		const searchUnidadesCount = document.getElementById("searchUnidadesCount");
+		const toggleUnidadFormBtn = document.getElementById("toggleUnidadFormBtn");
+		const cancelUnidadFormBtn = document.getElementById("cancelUnidadFormBtn");
+		const unidadFormWrap = document.getElementById("unidadFormWrap");
+		const unidadForm = document.getElementById("unidadForm");
 		const unidadInput = document.getElementById("unidad");
 		const temaInput = document.getElementById("tema");
 		const unidadInfo = document.getElementById("unidadInfo");
 		const unidadDatalist = document.getElementById("unidadDatalist");
-		const solicitudUnidadDatalist = document.getElementById("solicitudUnidadDatalist");
 		const insumoUnidadDatalist = document.getElementById("insumoUnidadDatalist");
 		const searchTaller = document.getElementById("searchTaller");
+		const searchTallerCount = document.getElementById("searchTallerCount");
 		const toggleTallerFormBtn = document.getElementById("toggleTallerFormBtn");
 		const cancelTallerFormBtn = document.getElementById("cancelTallerFormBtn");
 		const tallerFormWrap = document.getElementById("tallerFormWrap");
@@ -1009,26 +1079,18 @@
 		const tallerEconomicoDatalist = document.getElementById("tallerEconomicoDatalist");
 		const tallerTbody = document.getElementById("tallerTbody");
 		const searchInsumos = document.getElementById("searchInsumos");
-		const searchSolicitud = document.getElementById("searchSolicitud");
+		const searchInsumosCount = document.getElementById("searchInsumosCount");
 		const insumosTbody = document.getElementById("insumosTbody");
-		const solicitudTbody = document.getElementById("solicitudTbody");
 		const insumosModal = document.getElementById("insumosModal");
 		const insumosModalTitle = document.getElementById("insumosModalTitle");
-		const solicitudModal = document.getElementById("solicitudModal");
 		const openInsumosModalBtn = document.getElementById("openInsumosModalBtn");
-		const openSolicitudModalBtn = document.getElementById("openSolicitudModalBtn");
 		const closeInsumosModalBtn = document.getElementById("closeInsumosModalBtn");
 		const cancelInsumosModalBtn = document.getElementById("cancelInsumosModalBtn");
-		const closeSolicitudModalBtn = document.getElementById("closeSolicitudModalBtn");
-		const cancelSolicitudModalBtn = document.getElementById("cancelSolicitudModalBtn");
 		const insumosForm = document.getElementById("insumosForm");
 		const insumoEconomicoInput = document.getElementById("insumo-economico");
 		const insumoUnidadInput = document.getElementById("insumo-unidad");
 		const insumoObservacionesInput = document.getElementById("insumo-observaciones");
-		const solicitudForm = document.getElementById("solicitudForm");
 		const saveInsumosBtn = document.getElementById("saveInsumosBtn");
-		const saveSolicitudBtn = document.getElementById("saveSolicitudBtn");
-		const resetSolicitudBtn = document.getElementById("resetSolicitudBtn");
 		const editModal = document.getElementById("editModal");
 		const editModalTitle = document.getElementById("editModalTitle");
 		const editFields = document.getElementById("editFields");
@@ -1037,21 +1099,19 @@
 		const cancelEditBtn = document.getElementById("cancelEditBtn");
 		const saveEditBtn = document.getElementById("saveEditBtn");
 
-		const SHEETDB_ID = "wolez9lc8e2vc";
+		const SHEETDB_ID = "8lipdongaalbd";
 		const SHEETDB_URL = `https://sheetdb.io/api/v1/${SHEETDB_ID}`;
 		// If you deploy the Apps Script webapp, put its URL here so the UI can call the reset endpoint.
 		const APPS_SCRIPT_URL = ""; // e.g. https://script.google.com/macros/s/XXX/exec
 		const SHEET_UNIDADES = "UNIDADES TRES SIGLOS";
-		const SHEET_SERVICIOS = "DETALLES DE SERVICIOS";
-		const SHEET_TALLER = "unidades en taller";
+		const SHEET_SERVICIOS = "DETALLES REPORTADOS";
+		const SHEET_TALLER = "UNIDADES EN TALLER";
 		const SHEET_INSUMOS = "SOLICITUD DE LLANTAS";
-		const SHEET_SOLICITUD = "costos de talleres";
 		const TALLER_DEFAULT_LUGAR = "Sigue en taller";
 
 		const SERVICIO_COLUMNS = ["FECHA", "UNIDAD", "TEMA", "COMENTARIO", "ESTATUS"];
 		const TALLER_COLUMNS = ["Lugar taller", "economico", "tema", "comentario", "estatus"];
-		const INSUMOS_COLUMNS = ["economico", "unidad", "PRIMER EJE", "SEGUNDO EJE", "TERCER EJE", "CUARTO EJE", "QUINTO EJE", "SEXTO EJE", "OBSERVACIONES"];
-		const SOLICITUD_COLUMNS = ["fecha", "solicitante", "material", "cantidad solicitada", "estatus de entrega", "fecha de entrega"];
+		const INSUMOS_COLUMNS = ["economico", "unidad", "OBSERVACIONES", "PRIMER EJE", "SEGUNDO EJE", "TERCER EJE", "CUARTO EJE", "QUINTO EJE", "SEXTO EJE"];
 		const UNIDAD_COLUMNS = [
 			"ECONOMICO",
 			"UNIDAD",
@@ -1059,21 +1119,24 @@
 			"MODELO",
 			"PLACAS",
 			"NIV",
-			"No. MOTOR",
-			"No. DE TAG",
+			"NUMERO DE MOTOR",
+			"NUMERO DE TAG",
 			"ASEGURADORA",
 			"POLIZA DE SEGURO",
 			"INCISO",
 			"TIPO",
-			"ultimo cambio de balatas",
-			"ultimo cambio de llantas",
+			"TANQUE DE CONBUSTIBLE",
+			"LARGO",
+			"ALTO",
+			"ANCHO",
+			"ULTIMO CAMBIO DE LLANTAS",
+			"ULTIMO CAMBIO DE BALATAS",
 		];
 
 		let serviciosRows = [];
 		let unidadesRows = [];
 		let tallerRows = [];
 		let insumosRows = [];
-		let solicitudRows = [];
 		let rowCounter = 0;
 		let editContext = null;
 		let currentInsumoEditRow = null;
@@ -1387,7 +1450,6 @@
 			});
 
 			unidadDatalist.innerHTML = unidadOptions.join("");
-			solicitudUnidadDatalist.innerHTML = solicitudOptions.join("");
 			if (insumoUnidadDatalist) {
 				insumoUnidadDatalist.innerHTML = preventivoUnidadOptions.join("");
 			}
@@ -1647,6 +1709,10 @@
 			const query = (searchServicios.value || "").trim().toLowerCase();
 			const rows = serviciosRows.filter((row) => rowMatchesSearch(row, query));
 
+			if (searchServiciosCount) {
+				searchServiciosCount.textContent = query ? `${rows.length} coincidencia${rows.length === 1 ? "" : "s"}` : "";
+			}
+
 			if (!rows.length) {
 				detallesTbody.innerHTML = '<tr><td colspan="6" class="empty">No hay servicios que coincidan con la busqueda.</td></tr>';
 				return;
@@ -1691,8 +1757,12 @@
 			const query = (searchUnidades.value || "").trim().toLowerCase();
 			const rows = unidadesRows.filter((row) => rowMatchesSearch(row, query));
 
+			if (searchUnidadesCount) {
+				searchUnidadesCount.textContent = query ? `${rows.length} coincidencia${rows.length === 1 ? "" : "s"}` : "";
+			}
+
 			if (!rows.length) {
-				datosTbody.innerHTML = '<tr><td colspan="15" class="empty">No hay unidades que coincidan con la busqueda.</td></tr>';
+				datosTbody.innerHTML = '<tr><td colspan="19" class="empty">No hay unidades que coincidan con la busqueda.</td></tr>';
 				return;
 			}
 
@@ -1704,14 +1774,18 @@
 					const modelo = escapeHtml(row["MODELO"]);
 					const placas = escapeHtml(row["PLACAS"]);
 					const niv = escapeHtml(row["NIV"]);
-					const noMotor = escapeHtml(row["No. MOTOR"]);
-					const noTag = escapeHtml(row["No. DE TAG"]);
+					const noMotor = escapeHtml(row["NUMERO DE MOTOR"]);
+					const noTag = escapeHtml(row["NUMERO DE TAG"]);
 					const aseguradora = escapeHtml(row["ASEGURADORA"]);
 					const poliza = escapeHtml(row["POLIZA DE SEGURO"]);
 					const inciso = escapeHtml(row["INCISO"]);
 					const tipo = escapeHtml(row["TIPO"]);
-					const kmAntes = escapeHtml(row["ultimo cambio de balatas"]);
-					const ultimoCambio = escapeHtml(row["ultimo cambio de llantas"]);
+					const tanque = escapeHtml(row["TANQUE DE CONBUSTIBLE"]);
+					const largo = escapeHtml(row["LARGO"]);
+					const alto = escapeHtml(row["ALTO"]);
+					const ancho = escapeHtml(row["ANCHO"]);
+					const ultimoLlantas = escapeHtml(row["ULTIMO CAMBIO DE LLANTAS"]);
+					const ultimoBalatas = escapeHtml(row["ULTIMO CAMBIO DE BALATAS"]);
 					const id = escapeHtml(row.__id);
 
 					return `
@@ -1719,17 +1793,21 @@
 							<td>${economico}</td>
 							<td>${unidad}</td>
 							<td>${asignado}</td>
-							<td>${modelo}</td>
+							<td class="col-extra">${modelo}</td>
 							<td>${placas}</td>
 							<td>${niv}</td>
-							<td class="hidden-unit-col">${noMotor}</td>
-							<td class="hidden-unit-col">${noTag}</td>
-							<td class="hidden-unit-col">${aseguradora}</td>
-							<td class="hidden-unit-col">${poliza}</td>
-							<td class="hidden-unit-col">${inciso}</td>
-							<td class="hidden-unit-col">${tipo}</td>
-							<td>${kmAntes}</td>
-							<td>${ultimoCambio}</td>
+							<td class="col-extra">${noMotor}</td>
+							<td class="col-extra">${noTag}</td>
+							<td class="col-extra">${aseguradora}</td>
+							<td class="col-extra">${poliza}</td>
+							<td class="col-extra">${inciso}</td>
+							<td class="col-extra">${tipo}</td>
+							<td class="col-extra">${tanque}</td>
+							<td class="col-extra">${largo}</td>
+							<td class="col-extra">${alto}</td>
+							<td class="col-extra">${ancho}</td>
+							<td>${ultimoLlantas}</td>
+							<td>${ultimoBalatas}</td>
 							<td>
 								<button class="btn btn-secondary btn-small action-btn" data-action="edit-unidad" data-id="${id}">Editar</button>
 								<button class="btn btn-danger btn-small action-btn" data-action="delete-unidad" data-id="${id}">Eliminar</button>
@@ -1742,20 +1820,18 @@
 
 		function showErrorRows(message) {
 			detallesTbody.innerHTML = `<tr><td colspan="6" class="empty">${escapeHtml(message)}</td></tr>`;
-			datosTbody.innerHTML = `<tr><td colspan="15" class="empty">${escapeHtml(message)}</td></tr>`;
+			datosTbody.innerHTML = `<tr><td colspan="19" class="empty">${escapeHtml(message)}</td></tr>`;
 			tallerTbody.innerHTML = `<tr><td colspan="6" class="empty">${escapeHtml(message)}</td></tr>`;
-			insumosTbody.innerHTML = `<tr><td colspan="4" class="empty">${escapeHtml(message)}</td></tr>`;
-			solicitudTbody.innerHTML = `<tr><td colspan="1" class="empty"></td></tr>`;
+			insumosTbody.innerHTML = `<tr><td colspan="10" class="empty">${escapeHtml(message)}</td></tr>`;
 		}
 
 		async function loadAllData() {
 			try {
-				const [servicios, unidades, taller, insumos, solicitud] = await Promise.all([
+				const [servicios, unidades, taller, insumos] = await Promise.all([
 					fetchSheet(SHEET_SERVICIOS),
 					fetchSheet(SHEET_UNIDADES),
 					fetchSheet(SHEET_TALLER),
 					fetchSheet(SHEET_INSUMOS),
-					fetchSheet(SHEET_SOLICITUD),
 				]);
 
 				if (insumos.length) {
@@ -1786,16 +1862,10 @@
 					__id: createLocalId(),
 				}));
 
-				solicitudRows = solicitud.map((row) => ({
-					...normalizeRow(row, SOLICITUD_COLUMNS),
-					__id: createLocalId(),
-				}));
-
 				renderServicios();
 				renderUnidades();
 				renderTaller();
 				renderInsumos();
-				renderSolicitud();
 				updateAutocompleteSources();
 			} catch (error) {
 				console.error(error);
@@ -1819,10 +1889,6 @@
 			renderInsumos();
 		});
 
-		searchSolicitud.addEventListener("input", () => {
-			renderSolicitud();
-		});
-
 		openInsumosModalBtn.addEventListener("click", () => {
 			openInsumosForm(null);
 		});
@@ -1835,27 +1901,11 @@
 			syncInsumoUnidadFromEconomico();
 		});
 
-		if (resetSolicitudBtn) {
-			resetSolicitudBtn.style.display = "none";
-		}
-
-		openSolicitudModalBtn.addEventListener("click", () => {
-			openModal(solicitudModal);
-			document.getElementById("solicitud-fecha").value = getTodayLocalISO();
-			document.getElementById("solicitud-fecha").focus();
-		});
-
 		closeInsumosModalBtn.addEventListener("click", () => closeModal(insumosModal));
 		cancelInsumosModalBtn.addEventListener("click", () => closeModal(insumosModal));
-		closeSolicitudModalBtn.addEventListener("click", () => closeModal(solicitudModal));
-		cancelSolicitudModalBtn.addEventListener("click", () => closeModal(solicitudModal));
 
 		insumosModal.addEventListener("click", (event) => {
 			if (event.target === insumosModal) closeModal(insumosModal);
-		});
-
-		solicitudModal.addEventListener("click", (event) => {
-			if (event.target === solicitudModal) closeModal(solicitudModal);
 		});
 
 		function openTallerForm(open) {
@@ -1880,6 +1930,10 @@
 		function renderTaller() {
 			const query = (searchTaller.value || "").trim().toLowerCase();
 			const rows = tallerRows.filter((row) => rowMatchesSearch(row, query));
+
+			if (searchTallerCount) {
+				searchTallerCount.textContent = query ? `${rows.length} coincidencia${rows.length === 1 ? "" : "s"}` : "";
+			}
 
 			if (!rows.length) {
 				tallerTbody.innerHTML = '<tr><td colspan="6" class="empty">No hay entradas que coincidan con la busqueda.</td></tr>';
@@ -1921,8 +1975,12 @@
 				})
 				.filter((row) => rowMatchesSearch(row, query));
 
+			if (searchInsumosCount) {
+				searchInsumosCount.textContent = query ? `${rows.length} coincidencia${rows.length === 1 ? "" : "s"}` : "";
+			}
+
 			if (!rows.length) {
-				insumosTbody.innerHTML = '<tr><td colspan="4" class="empty">No hay unidades con solicitud de llantas.</td></tr>';
+				insumosTbody.innerHTML = '<tr><td colspan="10" class="empty">No hay unidades con solicitud de llantas.</td></tr>';
 				return;
 			}
 
@@ -1930,12 +1988,24 @@
 				const economico = escapeHtml(row["economico"]);
 				const unidad = escapeHtml(row["unidad"]);
 				const observaciones = escapeHtml(getObservacionesFromRow(row));
+				const primerEje = escapeHtml(row["PRIMER EJE"]);
+				const segundoEje = escapeHtml(row["SEGUNDO EJE"]);
+				const tercerEje = escapeHtml(row["TERCER EJE"]);
+				const cuartoEje = escapeHtml(row["CUARTO EJE"]);
+				const quintoEje = escapeHtml(row["QUINTO EJE"]);
+				const sextoEje = escapeHtml(row["SEXTO EJE"]);
 				const id = escapeHtml(row.__id);
 				return `
 					<tr>
-						<td><span class="unit-chip">${economico || "-"}</span></td>
-						<td><span class="unit-chip">${unidad || "-"}</span></td>
-						<td><span class="obs-mini">${observaciones || "-"}</span></td>
+						<td>${economico || "-"}</td>
+						<td>${unidad || "-"}</td>
+						<td>${observaciones || "-"}</td>
+						<td class="col-extra">${primerEje || "-"}</td>
+						<td class="col-extra">${segundoEje || "-"}</td>
+						<td class="col-extra">${tercerEje || "-"}</td>
+						<td class="col-extra">${cuartoEje || "-"}</td>
+						<td class="col-extra">${quintoEje || "-"}</td>
+						<td class="col-extra">${sextoEje || "-"}</td>
 						<td>
 							<button class="btn btn-secondary btn-small action-btn" data-action="show-insumo" data-id="${id}">Mostrar</button>
 							<button class="btn btn-primary btn-small action-btn" data-action="edit-insumo" data-id="${id}">Editar</button>
@@ -1944,10 +2014,6 @@
 					</tr>
 				`;
 			}).join("");
-		}
-
-		function renderSolicitud() {
-			solicitudTbody.innerHTML = '<tr><td colspan="1" class="empty"></td></tr>';
 		}
 
 		function openModal(modal) {
@@ -1978,7 +2044,7 @@
 			if (action === "delete-taller") {
 				const row = tallerRows.find((item) => item.__id === rowId);
 				if (!row) return;
-				const ok = confirm(`Eliminar entrada de ${row["economico"]} del taller?`);
+				const ok = confirm(`¿Eliminar entrada de ${row["economico"]} de UNIDADES EN TALLER?`);
 				if (!ok) return;
 				const criteria = pickCriteria(row, ["Lugar taller", "economico", "tema"]);
 				if (!Object.keys(criteria).length) { alert("No se puede eliminar: faltan datos clave."); return; }
@@ -1992,7 +2058,7 @@
 					await loadAllData();
 				} catch (error) {
 					console.error(error);
-					alert("No se pudo eliminar la entrada en SheetDB.");
+					alert("No se pudo eliminar la entrada de UNIDADES EN TALLER en SheetDB.");
 				}
 			}
 		});
@@ -2014,16 +2080,62 @@
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ data: [record] }),
 				});
-				if (!response.ok) throw new Error("No se pudo guardar en SheetDB.");
+				if (!response.ok) throw new Error("No se pudo guardar en UNIDADES EN TALLER.");
 				tallerForm.reset();
 				applyTallerDefaults();
 				openTallerForm(false);
 				await loadAllData();
 			} catch (error) {
 				console.error(error);
-				alert("No se pudo guardar la entrada en SheetDB.");
+				alert("No se pudo guardar la entrada en UNIDADES EN TALLER.");
 			} finally {
 				toggleTallerFormBtn.disabled = false;
+			}
+		});
+
+		function openUnidadForm(open) {
+			unidadFormWrap.classList.toggle("open", open);
+			toggleUnidadFormBtn.textContent = open ? "Ocultar formulario" : "Nueva unidad";
+		}
+
+		toggleUnidadFormBtn.addEventListener("click", () => {
+			openUnidadForm(!unidadFormWrap.classList.contains("open"));
+		});
+
+		cancelUnidadFormBtn.addEventListener("click", () => {
+			unidadForm.reset();
+			openUnidadForm(false);
+		});
+
+		unidadForm.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			const formData = new FormData(unidadForm);
+			const record = {};
+			UNIDAD_COLUMNS.forEach((column) => {
+				record[column] = (formData.get(column) || "").toString().trim();
+			});
+
+			if (!record["ECONOMICO"]) {
+				alert("El campo Economico es obligatorio para crear una unidad.");
+				return;
+			}
+
+			try {
+				toggleUnidadFormBtn.disabled = true;
+				const response = await fetch(`${SHEETDB_URL}?sheet=${encodeURIComponent(SHEET_UNIDADES)}`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ data: [record] }),
+				});
+				if (!response.ok) throw new Error("No se pudo guardar en UNIDADES TRES SIGLOS.");
+				unidadForm.reset();
+				openUnidadForm(false);
+				await loadAllData();
+			} catch (error) {
+				console.error(error);
+				alert("No se pudo guardar la unidad en UNIDADES TRES SIGLOS.");
+			} finally {
+				toggleUnidadFormBtn.disabled = false;
 			}
 		});
 
@@ -2048,7 +2160,7 @@
 			if (action === "delete-insumo") {
 				const row = insumosRows.find((item) => item.__id === rowId);
 				if (!row) return;
-				const ok = confirm(`Eliminar solicitud de llantas para ${row["unidad"] || row["economico"]}?`);
+				const ok = confirm(`¿Eliminar solicitud de SOLICITUD DE LLANTAS para ${row["unidad"] || row["economico"]}?`);
 				if (!ok) return;
 				const criteria = pickCriteria(row, ["economico", "unidad"]);
 				if (!Object.keys(criteria).length) {
@@ -2065,47 +2177,7 @@
 					await loadAllData();
 				} catch (error) {
 					console.error(error);
-					alert("No se pudo eliminar la solicitud de llantas.");
-				}
-			}
-		});
-
-		solicitudTbody.addEventListener("click", async (event) => {
-			if (panelSolicitud && panelSolicitud.classList.contains("active")) return;
-			const button = event.target.closest("button[data-action]");
-			if (!button) return;
-			const action = button.dataset.action;
-			const rowId = button.dataset.id;
-
-			if (action === "edit-solicitud") {
-				const row = solicitudRows.find((item) => item.__id === rowId);
-				if (!row) return;
-				const criteria = pickCriteria(row, ["fecha", "solicitante", "material"]);
-				if (!Object.keys(criteria).length) { alert("No se puede editar: faltan datos clave."); return; }
-				editContext = { sheet: SHEET_SOLICITUD, columns: SOLICITUD_COLUMNS, criteria, originalRow: { ...row } };
-				editModalTitle.textContent = "Editar SOLICITUD";
-				buildEditFormFields(SOLICITUD_COLUMNS, row, "solicitud");
-				openEditModal();
-			}
-
-			if (action === "delete-solicitud") {
-				const row = solicitudRows.find((item) => item.__id === rowId);
-				if (!row) return;
-				const ok = confirm(`Eliminar solicitud de "${row["solicitante"]}"?`);
-				if (!ok) return;
-				const criteria = pickCriteria(row, ["fecha", "solicitante", "material"]);
-				if (!Object.keys(criteria).length) { alert("No se puede eliminar: faltan datos clave."); return; }
-				try {
-					const beforeRows = await fetchSheet(SHEET_SOLICITUD);
-					const beforeCount = countRowMatches(beforeRows, row, SOLICITUD_COLUMNS);
-					await deleteRowsInSheet(SHEET_SOLICITUD, criteria);
-					const afterRows = await fetchSheet(SHEET_SOLICITUD);
-					const afterCount = countRowMatches(afterRows, row, SOLICITUD_COLUMNS);
-					if (afterCount >= beforeCount) throw new Error("La fila no se elimino de la base de datos.");
-					await loadAllData();
-				} catch (error) {
-					console.error(error);
-					alert("No se pudo eliminar la solicitud en SheetDB.");
+					alert("No se pudo eliminar de SOLICITUD DE LLANTAS.");
 				}
 			}
 		});
@@ -2143,7 +2215,7 @@
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({ data: [record] }),
 					});
-					if (!response.ok) throw new Error("No se pudo guardar en solicitud de llantas.");
+					if (!response.ok) throw new Error("No se pudo guardar en SOLICITUD DE LLANTAS.");
 				}
 				insumosForm.reset();
 				currentInsumoEditRow = null;
@@ -2151,41 +2223,9 @@
 				await loadAllData();
 			} catch (error) {       
 				console.error(error);
-				alert(error.message || "No se pudo guardar el registro en solicitud de llantas.");
+				alert(error.message || "No se pudo guardar el registro en SOLICITUD DE LLANTAS.");
 			} finally {
 				saveInsumosBtn.disabled = false;
-			}
-		});
-
-		solicitudForm.addEventListener("submit", async (event) => {
-			if (panelSolicitud && panelSolicitud.classList.contains("active")) return;
-			event.preventDefault();
-			const formData = new FormData(solicitudForm);
-			const record = {
-				"fecha": (formData.get("fecha") || "").toString().trim(),
-				"solicitante": (formData.get("solicitante") || "").toString().trim(),
-				"material": (formData.get("material") || "").toString().trim(),
-				"cantidad solicitada": (formData.get("cantidad solicitada") || "").toString().trim(),
-				"estatus de entrega": (formData.get("estatus de entrega") || "").toString().trim(),
-				"fecha de entrega": (formData.get("fecha de entrega") || "").toString().trim(),
-			};
-
-			try {
-				saveSolicitudBtn.disabled = true;
-				const response = await fetch(`${SHEETDB_URL}?sheet=${encodeURIComponent(SHEET_SOLICITUD)}`, {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ data: [record] }),
-				});
-				if (!response.ok) throw new Error("No se pudo guardar en SOLICITUD.");
-				solicitudForm.reset();
-				closeModal(solicitudModal);
-				await loadAllData();
-			} catch (error) {
-				console.error(error);
-				alert("No se pudo guardar el registro en SOLICITUD.");
-			} finally {
-				saveSolicitudBtn.disabled = false;
 			}
 		});
 
@@ -2204,12 +2244,12 @@
 			const row = serviciosRows.find((item) => item.__id === rowId);
 			if (!row) return;
 
-			const ok = confirm("Eliminar este servicio de la base de datos?");
+			const ok = confirm("¿Eliminar este registro de DETALLES REPORTADOS de la base de datos?");
 			if (!ok) return;
 
 			const criteria = pickCriteria(row, SERVICIO_COLUMNS);
 			if (!Object.keys(criteria).length) {
-				alert("No se pudo construir criterio de borrado para este servicio.");
+				alert("No se pudo construir criterio de borrado para este registro de DETALLES REPORTADOS.");
 				return;
 			}
 
@@ -2217,7 +2257,7 @@
 				const beforeRows = await fetchSheet(SHEET_SERVICIOS);
 				const beforeCount = countRowMatches(beforeRows, row, SERVICIO_COLUMNS);
 				if (beforeCount > 1) {
-					throw new Error("Hay varias filas con los mismos datos; no se puede eliminar por seguridad.");
+					throw new Error("Hay varias filas con los mismos datos en DETALLES REPORTADOS; no se puede eliminar por seguridad.");
 				}
 				await deleteRowsInSheet(SHEET_SERVICIOS, criteria);
 				const afterRows = await fetchSheet(SHEET_SERVICIOS);
@@ -2230,7 +2270,7 @@
 				await loadAllData();
 			} catch (error) {
 				console.error(error);
-				alert("No se pudo eliminar el servicio en SheetDB o no se reflejo en la base.");
+				alert("No se pudo eliminar de DETALLES REPORTADOS en SheetDB o no se reflejó en la base.");
 			}
 		}
 
@@ -2245,18 +2285,18 @@
 
 			const criteria = pickCriteria(row, UNIDAD_COLUMNS);
 			if (!Object.keys(criteria).length) {
-				alert("No se puede eliminar porque no hay datos para usar como criterio.");
+				alert("No se puede eliminar de UNIDADES TRES SIGLOS porque no hay datos para usar como criterio.");
 				return;
 			}
 
-			const ok = confirm(`Eliminar unidad ${row["ECONOMICO"]} de la base de datos?`);
+			const ok = confirm(`¿Eliminar unidad ${row["ECONOMICO"]} de UNIDADES TRES SIGLOS de la base de datos?`);
 			if (!ok) return;
 
 			try {
 				const beforeRows = await fetchSheet(SHEET_UNIDADES);
 				const beforeCount = countRowMatches(beforeRows, row, UNIDAD_COLUMNS);
 				if (beforeCount > 1) {
-					throw new Error("Hay varias filas con los mismos datos; no se puede eliminar por seguridad.");
+					throw new Error("Hay varias filas con los mismos datos en UNIDADES TRES SIGLOS; no se puede eliminar por seguridad.");
 				}
 				await deleteRowsInSheet(SHEET_UNIDADES, criteria);
 				const afterRows = await fetchSheet(SHEET_UNIDADES);
@@ -2269,7 +2309,7 @@
 				await loadAllData();
 			} catch (error) {
 				console.error(error);
-				alert("No se pudo eliminar la unidad en SheetDB o no se reflejo en la base.");
+				alert("No se pudo eliminar de UNIDADES TRES SIGLOS en SheetDB o no se reflejó en la base.");
 			}
 		}
 
@@ -2327,7 +2367,7 @@
 							throw new Error("No se pudo crear el registro de SOLICITUD DE LLANTAS.");
 						}
 					} else {
-						throw new Error("Edicion cancelada: la fila original ya no existe en la base.");
+						throw new Error("Edición cancelada: la fila original ya no existe en la base.");
 					}
 				} else {
 					await updateRowsInSheet(editContext.sheet, editContext.criteria, updated);
@@ -2342,7 +2382,7 @@
 				});
 
 				if (changedSomething && afterUpdatedCount < 1 && beforeOriginalCount > 0) {
-					throw new Error("La edicion no se reflejo en la base de datos.");
+					throw new Error("La edición no se reflejó en la base de datos.");
 				}
 
 				if (changedSomething && afterOriginalCount >= beforeOriginalCount && afterUpdatedCount < 1) {
@@ -2353,7 +2393,7 @@
 				await loadAllData();
 			} catch (error) {
 				console.error(error);
-				alert(error.message || "No se pudo guardar la edicion completa en SheetDB.");
+				alert(error.message || "No se pudo guardar la edición completa en SheetDB.");
 			} finally {
 				saveEditBtn.disabled = false;
 			}
@@ -2382,7 +2422,7 @@
 				});
 
 				if (!response.ok) {
-					throw new Error("No se pudo guardar en SheetDB.");
+					throw new Error("No se pudo guardar en DETALLES REPORTADOS.");
 				}
 
 				detalleForm.reset();
@@ -2390,7 +2430,7 @@
 				await loadAllData();
 			} catch (error) {
 				console.error(error);
-				alert("No se pudo guardar el servicio en SheetDB. Revisa nombres de columnas y permisos.");
+				alert("No se pudo guardar el registro en DETALLES REPORTADOS. Revisa nombres de columnas y permisos.");
 			} finally {
 				toggleFormBtn.disabled = false;
 				unidadInfo.textContent = "Escribe Economico o Unidad para ver sugerencias.";
