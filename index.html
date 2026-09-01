@@ -348,6 +348,34 @@
 			display: block;
 		}
 
+		#detalleFormWrap.open {
+			position: fixed;
+			z-index: 1000;
+			left: 50%;
+			top: 50%;
+			width: min(1100px, calc(100vw - 32px));
+			max-height: calc(100vh - 48px);
+			overflow: auto;
+			transform: translate(-50%, -50%);
+			padding: 26px;
+			border: 1px solid #b8d5fb;
+			border-radius: 16px;
+			box-shadow: 0 24px 60px rgba(10, 30, 56, 0.3), 0 0 0 100vmax rgba(12, 24, 40, 0.45);
+		}
+
+		#detalleFormWrap form {
+			max-width: 640px;
+			margin: 0 auto;
+		}
+
+		#detalleFormWrap .field {
+			transition: transform 0.18s ease;
+		}
+
+		#detalleFormWrap .field:focus-within {
+			transform: translateX(4px);
+		}
+
 		.grid {
 			display: grid;
 			grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -355,7 +383,7 @@
 		}
 
 		.servicio-grid {
-			grid-template-columns: 150px minmax(170px, 1fr) minmax(220px, 1fr) minmax(320px, 1.45fr) 150px;
+			grid-template-columns: 1fr;
 			align-items: start;
 		}
 
@@ -592,6 +620,17 @@
 
 			.modal-card {
 				max-height: 95vh;
+			}
+
+			#detalleFormWrap.open {
+				width: calc(100vw - 20px);
+				max-height: calc(100vh - 20px);
+				padding: 20px 16px;
+				border-radius: 12px;
+			}
+
+			#detalleFormWrap form {
+				max-width: none;
 			}
 
 			.servicio-grid {
