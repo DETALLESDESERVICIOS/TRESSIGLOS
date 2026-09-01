@@ -817,6 +817,10 @@
 							<label for="unidad-ultimo-balatas">Ultimo cambio de balatas</label>
 							<input id="unidad-ultimo-balatas" name="ULTIMO CAMBIO DE BALATAS" type="text" />
 						</div>
+						<div class="field">
+							<label for="unidad-ubicacion">Ubicacion</label>
+							<input id="unidad-ubicacion" name="UBICACION" type="text" />
+						</div>
 					</div>
 					<div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
 						<button type="submit" class="btn btn-primary">Guardar unidad</button>
@@ -847,12 +851,13 @@
 							<th class="col-extra">ANCHO</th>
 							<th>ULTIMO CAMBIO DE LLANTAS</th>
 							<th>ULTIMO CAMBIO DE BALATAS</th>
+							<th class="col-extra">UBICACION</th>
 							<th>Accion</th>
 						</tr>
 					</thead>
 					<tbody id="datosTbody">
 						<tr>
-							<td colspan="19" class="empty">Cargando datos de unidades...</td>
+							<td colspan="20" class="empty">Cargando datos de unidades...</td>
 						</tr>
 					</tbody>
 				</table>
@@ -1170,6 +1175,7 @@
 			"ANCHO",
 			"ULTIMO CAMBIO DE LLANTAS",
 			"ULTIMO CAMBIO DE BALATAS",
+			"UBICACION",
 		];
 
 		let serviciosRows = [];
@@ -1877,7 +1883,7 @@
 			}
 
 			if (!rows.length) {
-				datosTbody.innerHTML = '<tr><td colspan="19" class="empty">No hay unidades que coincidan con la busqueda.</td></tr>';
+				datosTbody.innerHTML = '<tr><td colspan="20" class="empty">No hay unidades que coincidan con la busqueda.</td></tr>';
 				return;
 			}
 
@@ -1901,6 +1907,7 @@
 					const ancho = escapeHtml(row["ANCHO"]);
 					const ultimoLlantas = escapeHtml(row["ULTIMO CAMBIO DE LLANTAS"]);
 					const ultimoBalatas = escapeHtml(row["ULTIMO CAMBIO DE BALATAS"]);
+					const ubicacion = escapeHtml(row["UBICACION"]);
 					const id = escapeHtml(row.__id);
 
 					return `
@@ -1923,6 +1930,7 @@
 							<td class="col-extra">${ancho}</td>
 							<td>${ultimoLlantas}</td>
 							<td>${ultimoBalatas}</td>
+							<td class="col-extra">${ubicacion}</td>
 							<td>
 								<button class="btn btn-secondary btn-small action-btn" data-action="edit-unidad" data-id="${id}">Editar</button>
 								<button class="btn btn-danger btn-small action-btn" data-action="delete-unidad" data-id="${id}">Eliminar</button>
@@ -1935,7 +1943,7 @@
 
 		function showErrorRows(message) {
 			detallesTbody.innerHTML = `<tr><td colspan="6" class="empty">${escapeHtml(message)}</td></tr>`;
-			datosTbody.innerHTML = `<tr><td colspan="19" class="empty">${escapeHtml(message)}</td></tr>`;
+			datosTbody.innerHTML = `<tr><td colspan="20" class="empty">${escapeHtml(message)}</td></tr>`;
 			tallerTbody.innerHTML = `<tr><td colspan="6" class="empty">${escapeHtml(message)}</td></tr>`;
 			insumosTbody.innerHTML = `<tr><td colspan="10" class="empty">${escapeHtml(message)}</td></tr>`;
 		}
