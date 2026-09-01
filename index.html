@@ -1622,6 +1622,45 @@
 			return [];
 		}
 
+		function buildFallbackUrl(sheetName, firstKey, firstValue, criteria) {
+			const url = new URL(`${SHEETDB_URL}/${encodeURIComponent(firstKey)}/${encodeURIComponent(firstValue)}`);
+			url.searchParams.set("sheet", sheetName);
+			// Send every other known field too, so SheetDB narrows down to this exact row
+			// instead of only matching by the single fallback column.
+			Object.entries(criteria).forEach(([key, value]) => {
+				const trimmed = (value || "").toString().trim();
+				if (key !== firstKey && trimmed) {
+					url.searchParams.append(key, trimmed);
+				}
+			});
+			return url.toString();
+		}
+
+		// SheetDB's /{column}/{value} endpoint edits/deletes EVERY row matching that value,
+		// so this guard checks ALL known fields for the record and blocks the call unless
+		// they narrow the sheet down to exactly one current row.
+		async function assertFallbackTargetIsUnique(sheetName, criteria, actionLabel) {
+			const populatedEntries = Object.entries(criteria).filter(([, value]) => (value || "").toString().trim());
+			if (!populatedEntries.length) {
+				throw new Error(`No se puede ${actionLabel}: no hay datos suficientes para ubicar el registro en ${sheetName}.`);
+			}
+
+			const currentRows = await fetchSheet(sheetName);
+			const matches = currentRows.filter((row) =>
+				populatedEntries.every(([key, value]) => normalizeText(readByKey(row, key)) === normalizeText(value))
+			);
+
+			if (matches.length > 1) {
+				const summary = populatedEntries.map(([key, value]) => `"${key}" = "${value}"`).join(", ");
+				throw new Error(
+					`No se puede ${actionLabel}: hay ${matches.length} filas que coinciden con ${summary} en ${sheetName}. Agrega mas datos que distingan este registro antes de continuar, para no afectar otras filas.`
+				);
+			}
+			if (matches.length < 1) {
+				throw new Error(`No se encontro el registro en ${sheetName} con los datos proporcionados.`);
+			}
+		}
+
 		async function updateRowsInSheet(sheetName, criteria, data) {
 			if (sheetName === SHEET_INSUMOS) {
 				const [firstKey, firstValue] = getFallbackCriteria(sheetName, criteria);
@@ -1629,7 +1668,9 @@
 					throw new Error("No se pudo actualizar: no hay criterio valido para SOLICITUD DE LLANTAS.");
 				}
 
-				const directUrl = `${SHEETDB_URL}/${encodeURIComponent(firstKey)}/${encodeURIComponent(firstValue)}?sheet=${encodeURIComponent(sheetName)}`;
+				await assertFallbackTargetIsUnique(sheetName, criteria, "actualizar");
+
+				const directUrl = buildFallbackUrl(sheetName, firstKey, firstValue, criteria);
 				const directResponse = await fetch(directUrl, {
 					method: "PATCH",
 					headers: { "Content-Type": "application/json" },
@@ -1661,7 +1702,9 @@
 					throw new Error("No se pudo actualizar: no hay criterio valido para el fallback.");
 				}
 
-				const fallbackUrl = `${SHEETDB_URL}/${encodeURIComponent(firstKey)}/${encodeURIComponent(firstValue)}?sheet=${encodeURIComponent(sheetName)}`;
+				await assertFallbackTargetIsUnique(sheetName, criteria, "actualizar");
+
+				const fallbackUrl = buildFallbackUrl(sheetName, firstKey, firstValue, criteria);
 				response = await fetch(fallbackUrl, {
 					method: "PATCH",
 					headers: { "Content-Type": "application/json" },
@@ -1687,7 +1730,9 @@
 					throw new Error("No se pudo eliminar: no hay criterio valido para SOLICITUD DE LLANTAS.");
 				}
 
-				const directUrl = `${SHEETDB_URL}/${encodeURIComponent(firstKey)}/${encodeURIComponent(firstValue)}?sheet=${encodeURIComponent(sheetName)}`;
+				await assertFallbackTargetIsUnique(sheetName, criteria, "eliminar");
+
+				const directUrl = buildFallbackUrl(sheetName, firstKey, firstValue, criteria);
 				const directResponse = await fetch(directUrl, {
 					method: "DELETE",
 				});
@@ -1716,7 +1761,9 @@
 					throw new Error("No se pudo eliminar: no hay criterio valido para el fallback.");
 				}
 
-				const fallbackUrl = `${SHEETDB_URL}/${encodeURIComponent(firstKey)}/${encodeURIComponent(firstValue)}?sheet=${encodeURIComponent(sheetName)}`;
+				await assertFallbackTargetIsUnique(sheetName, criteria, "eliminar");
+
+				const fallbackUrl = buildFallbackUrl(sheetName, firstKey, firstValue, criteria);
 				response = await fetch(fallbackUrl, {
 					method: "DELETE",
 				});
@@ -2073,7 +2120,7 @@
 			if (action === "edit-taller") {
 				const row = tallerRows.find((item) => item.__id === rowId);
 				if (!row) return;
-				const criteria = pickCriteria(row, ["LUGAR TALLER", "ECONOMICO", "TEMA"]);
+				const criteria = pickCriteria(row, TALLER_COLUMNS);
 				if (!Object.keys(criteria).length) { alert("No se puede editar: faltan datos clave."); return; }
 				editContext = { sheet: SHEET_TALLER, columns: TALLER_COLUMNS, criteria, originalRow: { ...row } };
 				editModalTitle.textContent = "Editar unidad en taller";
@@ -2085,7 +2132,7 @@
 				if (!row) return;
 				const ok = confirm(`¿Eliminar entrada de ${row["ECONOMICO"]} de UNIDADES EN TALLER?`);
 				if (!ok) return;
-				const criteria = pickCriteria(row, ["LUGAR TALLER", "ECONOMICO", "TEMA"]);
+				const criteria = pickCriteria(row, TALLER_COLUMNS);
 				if (!Object.keys(criteria).length) { alert("No se puede eliminar: faltan datos clave."); return; }
 				try {
 					const beforeRows = await fetchSheet(SHEET_TALLER);
@@ -2207,7 +2254,7 @@
 				if (!row) return;
 				const ok = confirm(`¿Eliminar solicitud de SOLICITUD DE LLANTAS para ${row["unidad"] || row["economico"]}?`);
 				if (!ok) return;
-				const criteria = pickCriteria(row, ["economico", "unidad"]);
+				const criteria = pickCriteria(row, INSUMOS_COLUMNS);
 				if (!Object.keys(criteria).length) {
 					alert("No se puede eliminar: faltan datos clave.");
 					return;
@@ -2249,7 +2296,7 @@
 			try {
 				saveInsumosBtn.disabled = true;
 				if (currentInsumoEditRow) {
-					const criteria = pickCriteria(currentInsumoEditRow, ["economico", "unidad"]);
+					const criteria = pickCriteria(currentInsumoEditRow, INSUMOS_COLUMNS);
 					if (!Object.keys(criteria).length) {
 						throw new Error("No se pudo actualizar: faltan datos base.");
 					}
