@@ -832,23 +832,23 @@
 					<div class="grid">
 						<div class="field">
 							<label for="taller-lugar">Lugar taller</label>
-							<input id="taller-lugar" name="Lugar taller" type="text" value="Sigue en taller" readonly required />
+							<input id="taller-lugar" name="LUGAR TALLER" type="text" value="Sigue en taller" readonly required />
 						</div>
 						<div class="field">
 							<label for="taller-economico">Economico</label>
-							<input id="taller-economico" name="economico" type="text" list="tallerEconomicoDatalist" placeholder="Ej. U-102" autocomplete="off" required />
+							<input id="taller-economico" name="ECONOMICO" type="text" list="tallerEconomicoDatalist" placeholder="Ej. U-102" autocomplete="off" required />
 						</div>
 						<div class="field">
 							<label for="taller-tema">Tema</label>
-							<input id="taller-tema" name="tema" type="text" placeholder="Describe el problema" required />
+							<input id="taller-tema" name="TEMA" type="text" placeholder="Describe el problema" required />
 						</div>
 						<div class="field">
 							<label for="taller-comentario">Comentario</label>
-							<input id="taller-comentario" name="comentario" type="text" placeholder="Comentario breve" />
+							<input id="taller-comentario" name="COMENTARIO" type="text" placeholder="Comentario breve" />
 						</div>
 						<div class="field">
 							<label for="taller-estatus">Estatus</label>
-							<select id="taller-estatus" name="estatus" required>
+							<select id="taller-estatus" name="ESTATUS" required>
 								<option value="Pendiente">Pendiente</option>
 								<option value="En proceso">En proceso</option>
 								<option value="Resuelto">Resuelto</option>
@@ -1110,7 +1110,7 @@
 		const TALLER_DEFAULT_LUGAR = "Sigue en taller";
 
 		const SERVICIO_COLUMNS = ["FECHA", "UNIDAD", "TEMA", "COMENTARIO", "ESTATUS"];
-		const TALLER_COLUMNS = ["Lugar taller", "economico", "tema", "comentario", "estatus"];
+		const TALLER_COLUMNS = ["LUGAR TALLER", "ECONOMICO", "TEMA", "COMENTARIO", "ESTATUS"];
 		const INSUMOS_COLUMNS = ["economico", "unidad", "OBSERVACIONES", "PRIMER EJE", "SEGUNDO EJE", "TERCER EJE", "CUARTO EJE", "QUINTO EJE", "SEXTO EJE"];
 		const UNIDAD_COLUMNS = [
 			"ECONOMICO",
@@ -1228,7 +1228,7 @@
 					const value = escapeHtml(row[column] || "");
 					const id = formatFieldId(column);
 
-						if ((type === "taller") && column === "estatus") {
+						if ((type === "taller") && column === "ESTATUS") {
 					const current = (row[column] || "").toLowerCase();
 					return `
 						<div class="field">
@@ -1242,7 +1242,7 @@
 					`;
 				}
 
-				if ((type === "servicio" && column === "COMENTARIO") || (type === "taller" && column === "comentario")) {
+				if ((type === "servicio" && column === "COMENTARIO") || (type === "taller" && column === "COMENTARIO")) {
 					return `
 						<div class="field field-wide">
 							<label for="${id}">${escapeHtml(column)}</label>
@@ -1569,7 +1569,7 @@
 			const fallbackOrderMap = {
 				[SHEET_SERVICIOS]: ["TEMA", "UNIDAD", "FECHA"],
 				[SHEET_UNIDADES]: ["ECONOMICO", "UNIDAD", "PLACAS", "NIV"],
-				[SHEET_TALLER]: ["tema", "economico", "Lugar taller"],
+				[SHEET_TALLER]: ["TEMA", "ECONOMICO", "LUGAR TALLER"],
 			};
 
 			const fallbackOrder = fallbackOrderMap[sheetName] || Object.keys(criteria);
@@ -1941,13 +1941,13 @@
 			}
 
 			tallerTbody.innerHTML = rows.map((row) => {
-				const lugar = escapeHtml(row["Lugar taller"]);
-				const eco = escapeHtml(row["economico"]);
-				const tema = escapeHtml(row["tema"]);
-				const comentario = escapeHtml(row["comentario"]);
-				const estatus = escapeHtml(row["estatus"]);
+				const lugar = escapeHtml(row["LUGAR TALLER"]);
+				const eco = escapeHtml(row["ECONOMICO"]);
+				const tema = escapeHtml(row["TEMA"]);
+				const comentario = escapeHtml(row["COMENTARIO"]);
+				const estatus = escapeHtml(row["ESTATUS"]);
 				const id = escapeHtml(row.__id);
-				const rowClass = statusRowClass(row["estatus"]);
+				const rowClass = statusRowClass(row["ESTATUS"]);
 				return `
 					<tr class="${rowClass}">
 						<td>${lugar}</td>
@@ -2034,7 +2034,7 @@
 			if (action === "edit-taller") {
 				const row = tallerRows.find((item) => item.__id === rowId);
 				if (!row) return;
-				const criteria = pickCriteria(row, ["Lugar taller", "economico", "tema"]);
+				const criteria = pickCriteria(row, ["LUGAR TALLER", "ECONOMICO", "TEMA"]);
 				if (!Object.keys(criteria).length) { alert("No se puede editar: faltan datos clave."); return; }
 				editContext = { sheet: SHEET_TALLER, columns: TALLER_COLUMNS, criteria, originalRow: { ...row } };
 				editModalTitle.textContent = "Editar unidad en taller";
@@ -2044,9 +2044,9 @@
 			if (action === "delete-taller") {
 				const row = tallerRows.find((item) => item.__id === rowId);
 				if (!row) return;
-				const ok = confirm(`¿Eliminar entrada de ${row["economico"]} de UNIDADES EN TALLER?`);
+				const ok = confirm(`¿Eliminar entrada de ${row["ECONOMICO"]} de UNIDADES EN TALLER?`);
 				if (!ok) return;
-				const criteria = pickCriteria(row, ["Lugar taller", "economico", "tema"]);
+				const criteria = pickCriteria(row, ["LUGAR TALLER", "ECONOMICO", "TEMA"]);
 				if (!Object.keys(criteria).length) { alert("No se puede eliminar: faltan datos clave."); return; }
 				try {
 					const beforeRows = await fetchSheet(SHEET_TALLER);
@@ -2067,11 +2067,11 @@
 			event.preventDefault();
 			const formData = new FormData(tallerForm);
 			const record = {
-				"Lugar taller": TALLER_DEFAULT_LUGAR,
-				"economico": (formData.get("economico") || "").toString().trim(),
-				"tema": (formData.get("tema") || "").toString().trim(),
-				"comentario": (formData.get("comentario") || "").toString().trim(),
-				"estatus": (formData.get("estatus") || "").toString().trim(),
+				"LUGAR TALLER": TALLER_DEFAULT_LUGAR,
+				"ECONOMICO": (formData.get("ECONOMICO") || "").toString().trim(),
+				"TEMA": (formData.get("TEMA") || "").toString().trim(),
+				"COMENTARIO": (formData.get("COMENTARIO") || "").toString().trim(),
+				"ESTATUS": (formData.get("ESTATUS") || "").toString().trim(),
 			};
 			try {
 				toggleTallerFormBtn.disabled = true;
@@ -2080,14 +2080,17 @@
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ data: [record] }),
 				});
-				if (!response.ok) throw new Error("No se pudo guardar en UNIDADES EN TALLER.");
+				if (!response.ok) {
+					const detail = await response.text().catch(() => "");
+					throw new Error(`No se pudo guardar en UNIDADES EN TALLER. Status ${response.status}. ${detail}`.trim());
+				}
 				tallerForm.reset();
 				applyTallerDefaults();
 				openTallerForm(false);
 				await loadAllData();
 			} catch (error) {
 				console.error(error);
-				alert("No se pudo guardar la entrada en UNIDADES EN TALLER.");
+				alert(error.message || "No se pudo guardar la entrada en UNIDADES EN TALLER.");
 			} finally {
 				toggleTallerFormBtn.disabled = false;
 			}
@@ -2127,13 +2130,16 @@
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ data: [record] }),
 				});
-				if (!response.ok) throw new Error("No se pudo guardar en UNIDADES TRES SIGLOS.");
+				if (!response.ok) {
+					const detail = await response.text().catch(() => "");
+					throw new Error(`No se pudo guardar en UNIDADES TRES SIGLOS. Status ${response.status}. ${detail}`.trim());
+				}
 				unidadForm.reset();
 				openUnidadForm(false);
 				await loadAllData();
 			} catch (error) {
 				console.error(error);
-				alert("No se pudo guardar la unidad en UNIDADES TRES SIGLOS.");
+				alert(error.message || "No se pudo guardar la unidad en UNIDADES TRES SIGLOS.");
 			} finally {
 				toggleUnidadFormBtn.disabled = false;
 			}
@@ -2422,7 +2428,8 @@
 				});
 
 				if (!response.ok) {
-					throw new Error("No se pudo guardar en DETALLES REPORTADOS.");
+					const detail = await response.text().catch(() => "");
+					throw new Error(`No se pudo guardar en DETALLES REPORTADOS. Status ${response.status}. ${detail}`.trim());
 				}
 
 				detalleForm.reset();
@@ -2430,7 +2437,7 @@
 				await loadAllData();
 			} catch (error) {
 				console.error(error);
-				alert("No se pudo guardar el registro en DETALLES REPORTADOS. Revisa nombres de columnas y permisos.");
+				alert(error.message || "No se pudo guardar el registro en DETALLES REPORTADOS. Revisa nombres de columnas y permisos.");
 			} finally {
 				toggleFormBtn.disabled = false;
 				unidadInfo.textContent = "Escribe Economico o Unidad para ver sugerencias.";
