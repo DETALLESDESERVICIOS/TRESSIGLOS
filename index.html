@@ -690,7 +690,16 @@
 						</div>
 						<div class="field">
 							<label for="tema">Tema</label>
-							<input class="tema-input" id="tema" name="tema" type="text" placeholder="Describe el servicio" autocomplete="off" required />
+							<select class="tema-input" id="tema" name="tema" required>
+								<option value="" selected disabled>Selecciona un tema</option>
+								<option value="Insumo">Insumo</option>
+								<option value="Detalles">Detalles</option>
+								<option value="Luces">Luces</option>
+								<option value="Marcha">Marcha</option>
+								<option value="Carroceria">Carroceria</option>
+								<option value="Tema electrico">Tema electrico</option>
+								<option value="Llevar a taller">Llevar a taller</option>
+							</select>
 						</div>
 						<div class="field field-comentario">
 							<label for="comentario">Comentario</label>
@@ -1701,53 +1710,17 @@
 		}
 
 		async function updateRowsInSheet(sheetName, criteria, data) {
-			if (sheetName === SHEET_INSUMOS) {
-				const currentRows = await assertFallbackTargetIsUnique(sheetName, criteria, "actualizar");
-				const [firstKey, firstValue] = getFallbackCriteria(sheetName, criteria, currentRows);
-				if (!firstKey || !firstValue) {
-					throw new Error("No se pudo actualizar: no hay criterio valido para SOLICITUD DE LLANTAS.");
-				}
-
-				const directUrl = buildFallbackUrl(sheetName, firstKey, firstValue, criteria);
-				const directResponse = await fetch(directUrl, {
-					method: "PATCH",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ data }),
-				});
-
-				if (!directResponse.ok) {
-					const detail = await directResponse.text().catch(() => "");
-					throw new Error(`No se pudo actualizar en SheetDB. Status ${directResponse.status}. ${detail}`.trim());
-				}
-
-				const directResult = await directResponse.json().catch(() => ({}));
-				if (typeof directResult.updated === "number" && directResult.updated < 1) {
-					throw new Error("SheetDB no actualizo ningun registro.");
-				}
-				return;
+			const currentRows = await assertFallbackTargetIsUnique(sheetName, criteria, "actualizar");
+			const [firstKey, firstValue] = getFallbackCriteria(sheetName, criteria, currentRows);
+			if (!firstKey || !firstValue) {
+				throw new Error("No se pudo actualizar: no hay criterio valido para ubicar el registro.");
 			}
 
-			const params = queryWithSheet(sheetName, criteria);
-			let response = await fetch(`${SHEETDB_URL}/search?${params.toString()}`, {
+			const response = await fetch(buildFallbackUrl(sheetName, firstKey, firstValue, criteria), {
 				method: "PATCH",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ data }),
 			});
-
-			if (response.status === 405) {
-				const currentRows = await assertFallbackTargetIsUnique(sheetName, criteria, "actualizar");
-				const [firstKey, firstValue] = getFallbackCriteria(sheetName, criteria, currentRows);
-				if (!firstKey || !firstValue) {
-					throw new Error("No se pudo actualizar: no hay criterio valido para el fallback.");
-				}
-
-				const fallbackUrl = buildFallbackUrl(sheetName, firstKey, firstValue, criteria);
-				response = await fetch(fallbackUrl, {
-					method: "PATCH",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ data }),
-				});
-			}
 
 			if (!response.ok) {
 				const detail = await response.text().catch(() => "");
@@ -1761,48 +1734,15 @@
 		}
 
 		async function deleteRowsInSheet(sheetName, criteria) {
-			if (sheetName === SHEET_INSUMOS) {
-				const currentRows = await assertFallbackTargetIsUnique(sheetName, criteria, "eliminar");
-				const [firstKey, firstValue] = getFallbackCriteria(sheetName, criteria, currentRows);
-				if (!firstKey || !firstValue) {
-					throw new Error("No se pudo eliminar: no hay criterio valido para SOLICITUD DE LLANTAS.");
-				}
-
-				const directUrl = buildFallbackUrl(sheetName, firstKey, firstValue, criteria);
-				const directResponse = await fetch(directUrl, {
-					method: "DELETE",
-				});
-
-				if (!directResponse.ok) {
-					const detail = await directResponse.text().catch(() => "");
-					throw new Error(`No se pudo eliminar en SheetDB. Status ${detail}`.trim());
-				}
-
-				const directResult = await directResponse.json().catch(() => ({}));
-				if (typeof directResult.deleted === "number" && directResult.deleted < 1) {
-					throw new Error("SheetDB no elimino ningun registro.");
-				}
-				return;
+			const currentRows = await assertFallbackTargetIsUnique(sheetName, criteria, "eliminar");
+			const [firstKey, firstValue] = getFallbackCriteria(sheetName, criteria, currentRows);
+			if (!firstKey || !firstValue) {
+				throw new Error("No se pudo eliminar: no hay criterio valido para ubicar el registro.");
 			}
 
-			const params = queryWithSheet(sheetName, criteria);
-			let response = await fetch(`${SHEETDB_URL}/search?${params.toString()}`, {
+			const response = await fetch(buildFallbackUrl(sheetName, firstKey, firstValue, criteria), {
 				method: "DELETE",
 			});
-
-			// Some SheetDB setups reject DELETE on /search (405). Fallback to /{column}/{value}.
-			if (response.status === 405) {
-				const currentRows = await assertFallbackTargetIsUnique(sheetName, criteria, "eliminar");
-				const [firstKey, firstValue] = getFallbackCriteria(sheetName, criteria, currentRows);
-				if (!firstKey || !firstValue) {
-					throw new Error("No se pudo eliminar: no hay criterio valido para el fallback.");
-				}
-
-				const fallbackUrl = buildFallbackUrl(sheetName, firstKey, firstValue, criteria);
-				response = await fetch(fallbackUrl, {
-					method: "DELETE",
-				});
-			}
 
 			if (!response.ok) {
 				const detail = await response.text().catch(() => "");
