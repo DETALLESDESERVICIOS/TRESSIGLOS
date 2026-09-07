@@ -781,6 +781,14 @@
 							<input id="unidad-niv" name="NIV" type="text" />
 						</div>
 						<div class="field">
+							<label for="unidad-implento">Implento</label>
+							<input id="unidad-implento" name="IMPLENTO" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-camara">Camara</label>
+							<input id="unidad-camara" name="CAMARA" type="text" />
+						</div>
+						<div class="field">
 							<label for="unidad-motor">Numero de motor</label>
 							<input id="unidad-motor" name="NUMERO DE MOTOR" type="text" />
 						</div>
@@ -803,6 +811,14 @@
 						<div class="field">
 							<label for="unidad-tipo">Tipo</label>
 							<input id="unidad-tipo" name="TIPO" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-capacidad-carga">Capacidad de carga</label>
+							<input id="unidad-capacidad-carga" name="CAPACIDAD DE CARGA" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-peso-bruto">Peso bruto</label>
+							<input id="unidad-peso-bruto" name="PESO BRUTO" type="text" />
 						</div>
 						<div class="field">
 							<label for="unidad-tanque">Tanque de combustible</label>
@@ -850,12 +866,16 @@
 							<th>MODELO</th>
 							<th>PLACAS</th>
 							<th>NIV</th>
+							<th class="col-extra">IMPLENTO</th>
+							<th class="col-extra">CAMARA</th>
 							<th class="col-extra">NUMERO DE MOTOR</th>
 							<th class="col-extra">NUMERO DE TAG</th>
 							<th class="col-extra">ASEGURADORA</th>
 							<th class="col-extra">POLIZA DE SEGURO</th>
 							<th class="col-extra">INCISO</th>
 							<th class="col-extra">TIPO</th>
+							<th class="col-extra">CAPACIDAD DE CARGA</th>
+							<th class="col-extra">PESO BRUTO</th>
 							<th class="col-extra">TANQUE DE CONBUSTIBLE</th>
 							<th class="col-extra">LARGO</th>
 							<th class="col-extra">ALTO</th>
@@ -867,8 +887,8 @@
 						</tr>
 					</thead>
 					<tbody id="datosTbody">
-							<td>${modelo}</td>
-							<td colspan="20" class="empty">Cargando datos de unidades...</td>
+						<tr>
+							<td colspan="24" class="empty">Cargando datos de unidades...</td>
 						</tr>
 					</tbody>
 				</table>
@@ -1174,12 +1194,16 @@
 			"MODELO",
 			"PLACAS",
 			"NIV",
+			"IMPLENTO",
+			"CAMARA",
 			"NUMERO DE MOTOR",
 			"NUMERO DE TAG",
 			"ASEGURADORA",
 			"POLIZA DE SEGURO",
 			"INCISO",
 			"TIPO",
+			"CAPACIDAD DE CARGA",
+			"PESO BRUTO",
 			"TANQUE DE CONBUSTIBLE",
 			"LARGO",
 			"ALTO",
@@ -1825,7 +1849,7 @@
 			}
 
 			if (!rows.length) {
-				datosTbody.innerHTML = '<tr><td colspan="20" class="empty">No hay unidades que coincidan con la busqueda.</td></tr>';
+				datosTbody.innerHTML = '<tr><td colspan="24" class="empty">No hay unidades que coincidan con la busqueda.</td></tr>';
 				return;
 			}
 
@@ -1837,12 +1861,16 @@
 					const modelo = escapeHtml(row["MODELO"]);
 					const placas = escapeHtml(row["PLACAS"]);
 					const niv = escapeHtml(row["NIV"]);
+					const implento = escapeHtml(row["IMPLENTO"]);
+					const camara = escapeHtml(row["CAMARA"]);
 					const noMotor = escapeHtml(row["NUMERO DE MOTOR"]);
 					const noTag = escapeHtml(row["NUMERO DE TAG"]);
 					const aseguradora = escapeHtml(row["ASEGURADORA"]);
 					const poliza = escapeHtml(row["POLIZA DE SEGURO"]);
 					const inciso = escapeHtml(row["INCISO"]);
 					const tipo = escapeHtml(row["TIPO"]);
+					const capacidadCarga = escapeHtml(row["CAPACIDAD DE CARGA"]);
+					const pesoBruto = escapeHtml(row["PESO BRUTO"]);
 					const tanque = escapeHtml(row["TANQUE DE CONBUSTIBLE"]);
 					const largo = escapeHtml(row["LARGO"]);
 					const alto = escapeHtml(row["ALTO"]);
@@ -1860,12 +1888,16 @@
 							<td>${modelo}</td>
 							<td>${placas}</td>
 							<td>${niv}</td>
+							<td class="col-extra">${implento}</td>
+							<td class="col-extra">${camara}</td>
 							<td class="col-extra">${noMotor}</td>
 							<td class="col-extra">${noTag}</td>
 							<td class="col-extra">${aseguradora}</td>
 							<td class="col-extra">${poliza}</td>
 							<td class="col-extra">${inciso}</td>
 							<td class="col-extra">${tipo}</td>
+							<td class="col-extra">${capacidadCarga}</td>
+							<td class="col-extra">${pesoBruto}</td>
 							<td class="col-extra">${tanque}</td>
 							<td class="col-extra">${largo}</td>
 							<td class="col-extra">${alto}</td>
@@ -1885,7 +1917,7 @@
 
 		function showErrorRows(message) {
 			detallesTbody.innerHTML = `<tr><td colspan="6" class="empty">${escapeHtml(message)}</td></tr>`;
-			datosTbody.innerHTML = `<tr><td colspan="20" class="empty">${escapeHtml(message)}</td></tr>`;
+			datosTbody.innerHTML = `<tr><td colspan="24" class="empty">${escapeHtml(message)}</td></tr>`;
 			tallerTbody.innerHTML = `<tr><td colspan="6" class="empty">${escapeHtml(message)}</td></tr>`;
 			insumosTbody.innerHTML = `<tr><td colspan="10" class="empty">${escapeHtml(message)}</td></tr>`;
 		}
