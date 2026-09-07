@@ -848,6 +848,18 @@
 							<label for="unidad-ubicacion">Ubicacion</label>
 							<input id="unidad-ubicacion" name="UBICACION" type="text" />
 						</div>
+						<div class="field">
+							<label for="unidad-clase">CLASE</label>
+							<input id="unidad-clase" name="CLASE" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-numero-ejes">NUMERO DE EJES</label>
+							<input id="unidad-numero-ejes" name="NUMERO DE EJES" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-tarjeta-circulacion">TIPO DE TARJETA DE CIRCULACION</label>
+							<input id="unidad-tarjeta-circulacion" name="TIPO DE TARJETA DE CIRCULACION" type="text" />
+						</div>
 					</div>
 					<div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
 						<button type="submit" class="btn btn-primary">Guardar unidad</button>
@@ -883,12 +895,15 @@
 							<th>ULTIMO CAMBIO DE LLANTAS</th>
 							<th>ULTIMO CAMBIO DE BALATAS</th>
 							<th class="col-extra">UBICACION</th>
+							<th class="col-extra">CLASE</th>
+							<th class="col-extra">NUMERO DE EJES</th>
+							<th class="col-extra">TIPO DE TARJETA DE CIRCULACION</th>
 							<th>Accion</th>
 						</tr>
 					</thead>
 					<tbody id="datosTbody">
 						<tr>
-							<td colspan="24" class="empty">Cargando datos de unidades...</td>
+							<td colspan="27" class="empty">Cargando datos de unidades...</td>
 						</tr>
 					</tbody>
 				</table>
@@ -1211,6 +1226,9 @@
 			"ULTIMO CAMBIO DE LLANTAS",
 			"ULTIMO CAMBIO DE BALATAS",
 			"UBICACION",
+			"CLASE",
+			"NUMERO DE EJES",
+			"TIPO DE TARJETA DE CIRCULACION",
 		];
 
 		let serviciosRows = [];
@@ -1849,7 +1867,7 @@
 			}
 
 			if (!rows.length) {
-				datosTbody.innerHTML = '<tr><td colspan="24" class="empty">No hay unidades que coincidan con la busqueda.</td></tr>';
+				datosTbody.innerHTML = '<tr><td colspan="27" class="empty">No hay unidades que coincidan con la busqueda.</td></tr>';
 				return;
 			}
 
@@ -1878,6 +1896,9 @@
 					const ultimoLlantas = escapeHtml(row["ULTIMO CAMBIO DE LLANTAS"]);
 					const ultimoBalatas = escapeHtml(row["ULTIMO CAMBIO DE BALATAS"]);
 					const ubicacion = escapeHtml(row["UBICACION"]);
+					const clase = escapeHtml(row["CLASE"]);
+					const numeroEjes = escapeHtml(row["NUMERO DE EJES"]);
+					const tipoTarjetaCirculacion = escapeHtml(row["TIPO DE TARJETA DE CIRCULACION"]);
 					const id = escapeHtml(row.__id);
 
 					return `
@@ -1905,6 +1926,9 @@
 							<td>${ultimoLlantas}</td>
 							<td>${ultimoBalatas}</td>
 							<td class="col-extra">${ubicacion}</td>
+							<td class="col-extra">${clase}</td>
+							<td class="col-extra">${numeroEjes}</td>
+							<td class="col-extra">${tipoTarjetaCirculacion}</td>
 							<td>
 								<button class="btn btn-secondary btn-small action-btn" data-action="edit-unidad" data-id="${id}">Editar</button>
 								<button class="btn btn-danger btn-small action-btn" data-action="delete-unidad" data-id="${id}">Eliminar</button>
@@ -1917,7 +1941,7 @@
 
 		function showErrorRows(message) {
 			detallesTbody.innerHTML = `<tr><td colspan="6" class="empty">${escapeHtml(message)}</td></tr>`;
-			datosTbody.innerHTML = `<tr><td colspan="24" class="empty">${escapeHtml(message)}</td></tr>`;
+			datosTbody.innerHTML = `<tr><td colspan="27" class="empty">${escapeHtml(message)}</td></tr>`;
 			tallerTbody.innerHTML = `<tr><td colspan="6" class="empty">${escapeHtml(message)}</td></tr>`;
 			insumosTbody.innerHTML = `<tr><td colspan="10" class="empty">${escapeHtml(message)}</td></tr>`;
 		}
