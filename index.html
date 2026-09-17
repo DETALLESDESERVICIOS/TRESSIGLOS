@@ -813,6 +813,14 @@
 							<input id="unidad-tipo" name="TIPO" type="text" />
 						</div>
 						<div class="field">
+							<label for="unidad-color">COLOR</label>
+							<input id="unidad-color" name="COLOR" type="text" />
+						</div>
+						<div class="field">
+							<label for="unidad-tipo-identificacion">TIPO DE IDENTIFICACION</label>
+							<input id="unidad-tipo-identificacion" name="TIPO DE IDENTIFICACION" type="text" />
+						</div>
+						<div class="field">
 							<label for="unidad-capacidad-carga">Capacidad de carga</label>
 							<input id="unidad-capacidad-carga" name="CAPACIDAD DE CARGA" type="text" />
 						</div>
@@ -886,6 +894,8 @@
 							<th class="col-extra">POLIZA DE SEGURO</th>
 							<th class="col-extra">INCISO</th>
 							<th class="col-extra">TIPO</th>
+							<th class="col-extra">COLOR</th>
+							<th class="col-extra">TIPO DE IDENTIFICACION</th>
 							<th class="col-extra">CAPACIDAD DE CARGA</th>
 							<th class="col-extra">PESO BRUTO</th>
 							<th class="col-extra">TANQUE DE CONBUSTIBLE</th>
@@ -903,7 +913,7 @@
 					</thead>
 					<tbody id="datosTbody">
 						<tr>
-							<td colspan="27" class="empty">Cargando datos de unidades...</td>
+							<td colspan="29" class="empty">Cargando datos de unidades...</td>
 						</tr>
 					</tbody>
 				</table>
@@ -1217,6 +1227,8 @@
 			"POLIZA DE SEGURO",
 			"INCISO",
 			"TIPO",
+			"COLOR",
+			"TIPO DE IDENTIFICACION",
 			"CAPACIDAD DE CARGA",
 			"PESO BRUTO",
 			"TANQUE DE CONBUSTIBLE",
@@ -1867,7 +1879,7 @@
 			}
 
 			if (!rows.length) {
-				datosTbody.innerHTML = '<tr><td colspan="27" class="empty">No hay unidades que coincidan con la busqueda.</td></tr>';
+				datosTbody.innerHTML = '<tr><td colspan="29" class="empty">No hay unidades que coincidan con la busqueda.</td></tr>';
 				return;
 			}
 
@@ -1887,6 +1899,8 @@
 					const poliza = escapeHtml(row["POLIZA DE SEGURO"]);
 					const inciso = escapeHtml(row["INCISO"]);
 					const tipo = escapeHtml(row["TIPO"]);
+					const color = escapeHtml(row["COLOR"]);
+					const tipoIdentificacion = escapeHtml(row["TIPO DE IDENTIFICACION"]);
 					const capacidadCarga = escapeHtml(row["CAPACIDAD DE CARGA"]);
 					const pesoBruto = escapeHtml(row["PESO BRUTO"]);
 					const tanque = escapeHtml(row["TANQUE DE CONBUSTIBLE"]);
@@ -1917,6 +1931,8 @@
 							<td class="col-extra">${poliza}</td>
 							<td class="col-extra">${inciso}</td>
 							<td class="col-extra">${tipo}</td>
+							<td class="col-extra">${color}</td>
+							<td class="col-extra">${tipoIdentificacion}</td>
 							<td class="col-extra">${capacidadCarga}</td>
 							<td class="col-extra">${pesoBruto}</td>
 							<td class="col-extra">${tanque}</td>
@@ -1941,7 +1957,7 @@
 
 		function showErrorRows(message) {
 			detallesTbody.innerHTML = `<tr><td colspan="6" class="empty">${escapeHtml(message)}</td></tr>`;
-			datosTbody.innerHTML = `<tr><td colspan="27" class="empty">${escapeHtml(message)}</td></tr>`;
+			datosTbody.innerHTML = `<tr><td colspan="29" class="empty">${escapeHtml(message)}</td></tr>`;
 			tallerTbody.innerHTML = `<tr><td colspan="6" class="empty">${escapeHtml(message)}</td></tr>`;
 			insumosTbody.innerHTML = `<tr><td colspan="10" class="empty">${escapeHtml(message)}</td></tr>`;
 		}
